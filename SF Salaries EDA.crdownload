@@ -1,0 +1,552 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+# Imoprting Required Libraries
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+
+# In[3]:
+
+
+# Loading the Dataset
+
+df = pd.read_excel("SF Salaries.xlsx" , sheet_name = "Strucured")
+
+
+# In[4]:
+
+
+# Retrieving the Top 5 Records or Rows to get a brief Overview about Dataset (Impression)
+
+df.head()   #df.tail() or df.sample()
+
+
+# In[6]:
+
+
+# Restoring Breif Information About our Dataset ( # of Rows & # of Features & Column Names & Datatypes & # of Non Null Values)
+
+df.info()
+
+
+# In[8]:
+
+
+# Returning Statistical Insights or Statistical Summary on your Dataset
+
+df.describe().round()
+
+
+# In[9]:
+
+
+# Checking For Missing or Null Values
+
+df.isna().sum()
+
+
+# In[10]:
+
+
+# Investigating For Null Values
+
+df.isnull().sum()
+
+
+# In[11]:
+
+
+# Detecting For Duplications
+
+df.duplicated().sum()
+
+
+# In[13]:
+
+
+# Exploring the Values the BasePay Column
+
+df["BasePay"].unique()
+
+
+# In[14]:
+
+
+# Replacing the Value of "Not Provided" With "Null" in BasePay Column
+
+df["BasePay"] = df["BasePay"].replace("Not Provided" , np.nan)
+
+
+# In[15]:
+
+
+# Converting The BasePay Column to Numeric
+
+df["BasePay"] = pd.to_numeric(df["BasePay"])
+
+
+# In[16]:
+
+
+# Datatypes Virevications
+
+df.dtypes
+
+
+# In[17]:
+
+
+# What's the Average of BasePay Column?
+
+df["BasePay"].mean()
+
+
+# In[18]:
+
+
+# What's the Average of BasePay Column?
+
+np.mean(df["BasePay"])
+
+
+# In[20]:
+
+
+# Handleing Missing Values in Overtime Column
+
+df["OvertimePay"].unique()
+
+
+# In[21]:
+
+
+# Substituting The Value of "Not Provided" With Nan in Overtime Column
+
+df["OvertimePay"] = df["OvertimePay"].replace("Not Provided" , np.nan)
+
+
+# In[23]:
+
+
+# Transforming the Datatype in Overtime Column Into Numeric
+
+df["OvertimePay"] = pd.to_numeric(df["OvertimePay"])
+
+
+# In[24]:
+
+
+# Chicking For Datatype in Overtime Column
+
+df["OvertimePay"].dtype
+
+
+# In[25]:
+
+
+# What's the Highest Value of Overtime Column?
+
+df["OvertimePay"].max()
+
+
+# In[26]:
+
+
+# What's the Highest Value of Overtime Column?
+
+np.max(df["OvertimePay"])
+
+
+# In[29]:
+
+
+# Retrieving the Job Title of JOSEPH DRISCOLL Employee Name
+
+df.loc[df["EmployeeName"] == "JOSEPH DRISCOLL"]
+
+
+# In[30]:
+
+
+# Retrieving the Job Title of JOSEPH DRISCOLL Employee Name
+
+df[df["EmployeeName"] == "JOSEPH DRISCOLL"]
+
+
+# In[31]:
+
+
+# How Much Does JOSEPH DRISCOLL Get (Including Benefits)
+
+df[df["EmployeeName"] == "JOSEPH DRISCOLL"]["TotalPayBenefits"]
+
+
+# In[32]:
+
+
+# How Much Does JOSEPH DRISCOLL Get (Including Benefits)
+
+df.loc[df["EmployeeName"] == "JOSEPH DRISCOLL"]["TotalPayBenefits"]
+
+
+# In[34]:
+
+
+# Returning The Record that Encompass The Highest Salary
+
+df.loc[df["TotalPayBenefits"].idxmax()]
+
+
+# In[35]:
+
+
+# Restoring The Record that Encompass The Highest Salary
+
+x = np.max(df["TotalPayBenefits"].max())
+
+df[df["TotalPayBenefits"] == x]
+
+
+# In[38]:
+
+
+# Restoring The Record that Encompass The Highest Salary
+
+df.loc[df["TotalPayBenefits"] == df["TotalPayBenefits"].max()]
+
+
+# In[40]:
+
+
+# Restoring The Record that Encompass The Highest Salary
+
+df.nlargest(1 , 'TotalPayBenefits')["EmployeeName"]
+
+
+# In[41]:
+
+
+# Restoring The Record that Encompass The Lowest Salary
+
+df.loc[df["TotalPayBenefits"].idxmin()]
+
+
+# In[43]:
+
+
+# Restoring The Record that Encompass The Highest Salary
+
+df[df["TotalPayBenefits"] == df["TotalPayBenefits"].min()]
+
+
+# In[44]:
+
+
+# Restoring The Record that Encompass The Highest Salary
+
+y = df["TotalPayBenefits"].min()
+
+df.loc[df["TotalPayBenefits"] == y]
+
+
+# In[46]:
+
+
+# Restoring The Record that Encompass The Highest Salary
+
+df.nsmallest(1 , "TotalPayBenefits")["EmployeeName"]
+
+
+# In[47]:
+
+
+# Returning all Employees That The Company Own Money
+
+df.loc[df["TotalPayBenefits"] < 0]
+
+
+# In[48]:
+
+
+# Returning all Employees That The Company Own Money
+
+df[df["TotalPayBenefits"] < 0]
+
+
+# In[49]:
+
+
+# Descovering Values in Year Column
+
+df["Year"].unique()
+
+
+# In[57]:
+
+
+# What's The Average BasePay In Terms Of Years
+
+df.groupby("Year" , as_index = False)["BasePay"].mean().sort_values(by = "BasePay" , ascending = False)
+
+
+# In[67]:
+
+
+# Ploting What's The Average BasePay In Terms Of Years
+
+plt.figure(figsize = (12 , 4))
+df.groupby("Year" )["BasePay"].mean().sort_values( ascending = False).plot( kind = 'bar' , color = 'g')
+plt.xticks(rotation = 0.25)
+plt.show()
+
+
+# In[52]:
+
+
+# What's The Average BasePay In Terms Of Years
+
+df.pivot_table( index = "Year" , values = "BasePay" , aggfunc = "mean")
+
+
+# In[68]:
+
+
+# How Many Unique Job Titles Are There
+
+df["JobTitle"].nunique()
+
+
+# In[69]:
+
+
+# What Are The Top 5 Most Common Job Titles?
+
+df["JobTitle"].value_counts().head()
+
+
+# In[71]:
+
+
+# What Are The Top 5 Most Common Job Titles?
+
+df["JobTitle"].value_counts()[0:5]
+
+
+# In[79]:
+
+
+# What Are The Top 5 Most Common Job Titles?
+
+df.groupby(["JobTitle"])["JobTitle"].count().sort_values( ascending = False).head()
+
+
+# In[73]:
+
+
+# What Are The Bottom 5 Most Common Job Titles?
+
+df["JobTitle"].value_counts().tail()
+
+
+# In[86]:
+
+
+# Number Of Titles That Have Been Repeated Just One Time In 2013
+
+(df[df["Year"] == 2013]['JobTitle'].value_counts() == 1).sum()
+
+
+# In[89]:
+
+
+# Calculating The Number Of Records That Contains Word Chief In Title Column
+
+df.loc[df["JobTitle"].str.contains('Chief' , na = False , case = False)].shape[0]
+
+
+# In[101]:
+
+
+# Construct a Function to Return The Number of Records That Contains Chief In Job Title
+
+def Chief(String):
+    if 'chief' in (String.lower()):
+        return True
+    else:
+        return False
+
+
+# In[93]:
+
+
+df["JobTitle"].head()
+
+
+# In[102]:
+
+
+# Checking For The Function Accuracy
+
+Chief('CHIEF MANAGER-METROPOLITAN TRANSIT AUTHORITY')
+
+
+# In[103]:
+
+
+# Applying The Function That We've Built
+
+(df["JobTitle"].apply(lambda x : Chief(x))).sum()
+
+
+# In[104]:
+
+
+# Applying The Function That We've Built
+
+sum(df["JobTitle"].apply(lambda x : Chief(x)))
+
+
+# In[105]:
+
+
+# Adding A New Column That Contains The Number Of Letters in Job Titles
+
+df["JobLenght"] = df["JobTitle"].apply(len)
+
+
+# In[107]:
+
+
+# Displaying The JobLength Column
+
+df["JobLenght"].sample(5)
+
+
+# In[110]:
+
+
+# Checking the Correlatino Between Joblength & Salary
+
+df[["JobLenght" , "TotalPayBenefits"]].corr()
+
+
+# In[112]:
+
+
+# Investigating the Correlation Between Two Variables
+
+df["JobLenght"].corr(df["TotalPayBenefits"])
+
+
+# In[113]:
+
+
+# Investigating the Correlation Between Two Variables
+
+df["TotalPayBenefits"].corr(df["JobLenght"])
+
+
+# In[118]:
+
+
+# Investigating the Correlation Between Two Variables
+
+sns.heatmap(df[["JobLenght" , "TotalPayBenefits"]].corr() , annot = True , cmap = 'coolwarm' , fmt = '.2f')
+plt.title("\nCorrelation Between Variables\n")
+plt.show()
+
+
+# In[119]:
+
+
+# Visualising the Correlation Between Variables
+
+sns.regplot( x = df["TotalPayBenefits"] , y = df["JobLenght"])
+
+plt.title("Correlation Between Salary VS JobLength")
+
+plt.show()
+
+
+# In[126]:
+
+
+# Checking The Datatype inside The Column Column Of TotalPayBenefits
+
+df["TotalPayBenefits"].dtype
+
+
+# In[127]:
+
+
+# Converting The Datatype into Int Inside TotalPayBenefits Column
+
+df["TotalPayBenefits"] = df["TotalPayBenefits"].astype(int)
+
+
+# In[129]:
+
+
+# Converting The Datatype into Int Inside TotalPayBenefits Column
+
+df["Year"] = df["Year"].astype(int)
+
+
+# In[130]:
+
+
+# Time Series Analysis
+
+plt.figure(figsize = (12 , 4))
+plt.plot( df["Year"] , df["TotalPayBenefits"] , marker = 'o' , linestyle = '--' , color = 'b' , label = 'TotalPayBenefits')
+
+plt.title("\nTime Series Analysis\n")
+plt.grid()
+plt.legend()
+plt.show()
+
+
+# In[132]:
+
+
+# Time Series Analysis
+
+plt.figure(figsize = (10 , 4))
+sns.lineplot(y = df["TotalPayBenefits"] , x = df["Year"] , data = df , markers = 'o' , linewidth = 2.5)
+plt.title("\nTime Series Analysis\n")
+plt.show()
+
+
+# In[145]:
+
+
+# Displaying Time Serias Analysis
+
+x = df.groupby('Year')['TotalPayBenefits'].sum()
+
+plt.figure(figsize = (12 , 5))
+plt.plot(x.index , x.values , marker = 'o' , linestyle = '--' , color = 'r')
+
+plt.title('\nSalaries By Years\n')
+plt.xlabel('\nYear\n')
+plt.ylabel('\nSalaries\n')
+
+plt.grid(axis = 'x' , linestyle = '--' , alpha = 0.7)
+plt.grid(axis = 'y' , linestyle = '--' , alpha = 0.7)
+
+plt.show()
+
+
+# In[ ]:
+
+
+
+
